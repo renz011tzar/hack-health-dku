@@ -39,6 +39,7 @@ def bigplotter(frame, i, h, w):
     # Preprocess the image for model inference
     image = tf.convert_to_tensor([img])
     image = tf.image.resize_with_pad(image, IMAGE_SIZE, IMAGE_SIZE)
+    image = tf.cast(image, dtype=tf.int32)
 
     # Perform model inference
     outputs = movenet(image)
@@ -53,12 +54,14 @@ def bigplotter(frame, i, h, w):
         end = (int(w*keypoints[0][0][end_idx][1]), int(h*keypoints[0][0][end_idx][0]))
         cv2.line(img, start, end, COLOR, THICKNESS)
 
-    cv2.imwrite(f'docs/extra/frame_{i}.jpeg', img)
+    cv2.imwrite(f'./extra/frame_{i}.jpeg', img)
 
 # Main script
 if __name__ == "__main__":
-    video = cv2.VideoCapture('/path/to/your/video.mp4')  # Replace with the actual path to your video
-
+    video = cv2.VideoCapture('./hola.mp4')  # Replace with the actual path to your video
+    if not video.isOpened():
+         print("Error: Could not open video file.")
+         exit()
     for i in range(SECONDS * FRAME_RATE):
         ret, frame = video.read()
         if not ret or frame is None:
