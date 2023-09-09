@@ -1,13 +1,18 @@
-import cv2 
+import cv2
+from pathlib import Path
 
-capture = cv2.VideoCapture('video_preview_h264.mp4') ## input video path here 
+frame_dir = Path('Frame')
+frame_dir.mkdir(exist_ok=True)
+
+capture = cv2.VideoCapture('hola.mp4')  # Input video path here
 frameNr = 0
-# os.system("rm -rf Frame")
-while (True):
+
+while True:
     success, frame = capture.read()
     if success:
-        cv2.imwrite(f'Frame/frame_{frameNr}.jpg', frame)
+        cv2.imwrite(f'Frame\\frame_{frameNr}.jpg', frame)
     else:
         break
-    frameNr = frameNr+1
+    frameNr += 1
+
 capture.release()
